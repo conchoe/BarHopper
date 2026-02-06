@@ -6,6 +6,8 @@ For geocoding, pass a plaintext address to the Geocoding API, which returns a JS
 For the bar search, provide the location (lat/lng), radius, and type parameters to the Places API, which returns a list of dictionaries representing nearby establishments.
 To calculate the walking distance, I used the math module to implement the Haversine formula. 
 
+Either use the script in findBars.py, or use the implementation in the "Projects" section of my portfolio to see it in action!
+
 TO OBTAIN A GOOGLE API KEY:
 1. Visit the Google Cloud Console.
 
@@ -15,4 +17,4 @@ TO OBTAIN A GOOGLE API KEY:
 
 4. Create a .env file in the root directory of this project.
 
-5. Add your key to the file: GOOGLE_API_KEY=your_key_here.
+5. Add your key to the .env file: GOOGLE_API_KEY=your_key_here.
