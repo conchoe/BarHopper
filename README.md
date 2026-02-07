@@ -8,6 +8,8 @@ To calculate the walking distance, I used the math module to implement the Haver
 
 Either use the script in findBars.py, or use the implementation in the "Projects" section of my portfolio to see it in action!
 
+*NOTE BarHopper uses a free version of Render which takes ~45 seconds to deploy if it has not been called in over 30 minutes. Thus the first bar search may take a sec!
+
 TO OBTAIN A GOOGLE API KEY:
 1. Visit the Google Cloud Console.
 
