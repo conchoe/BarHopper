@@ -13,11 +13,18 @@ app = FastAPI()
 
 # --- CORS SETTINGS ---
 # This allows your GitHub Pages site to talk to this Render server
+# --- CORS SETTINGS ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://conchoe.github.io/webpage.io/"],  
-    allow_methods=["https://conchoe.github.io/webpage.io/"],
-    allow_headers=["https://conchoe.github.io/webpage.io/"],
+    # Allow both your local testing and your live portfolio
+    allow_origins=[
+        "https://conchoe.github.io", 
+        "http://localhost:8000",
+        "http://127.0.0.1:3000"
+    ],  
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"], # Standard web methods
+    allow_headers=["*"], # Allow all standard browser headers
 )
 
 # --- YOUR LOGIC FUNCTIONS (Unchanged) ---
