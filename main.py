@@ -15,9 +15,9 @@ app = FastAPI()
 # This allows your GitHub Pages site to talk to this Render server
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For production, replace "*" with your GitHub Pages URL
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["https://conchoe.github.io/webpage.io/"],  
+    allow_methods=["https://conchoe.github.io/webpage.io/"],
+    allow_headers=["https://conchoe.github.io/webpage.io/"],
 )
 
 # --- YOUR LOGIC FUNCTIONS (Unchanged) ---
