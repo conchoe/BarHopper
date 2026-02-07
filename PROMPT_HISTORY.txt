@@ -1,1 +1,173 @@
+A) 🗺️ Project: Google Places–Powered Bar Hopping Routes
+What your app does:
 
+User enters a starting location (address)
+App finds nearby bars using Google Places
+App computes an “optimal” walking route
+Outputs an ordered list + distance estimate (optionally a map link)
+This is clearly more than just fetching data — it’s transforming + reasoning over it.
+🔑 APIs You’ll Use (Google)
+1. Google Places API (Nearby Search)
+Used to find bars near a location.
+Endpoint:
+
+
+https://maps.googleapis.com/maps/api/place/nearbysearch/json
+Key parameters:
+
+location=lat,lng
+radius=1500 (meters)
+type=bar
+key=YOUR_API_KEY
+Returns:
+
+Place name
+Latitude / longitude
+Rating
+Place ID
+2. Google Geocoding API
+Convert address → lat/lng
+Endpoint:
+
+
+https://maps.googleapis.com/maps/api/geocode/json
+(Optional) 3. Google Directions API
+If you want walking distance/time instead of straight-line distance.
+⚠️ This costs more quota-wise, so I recommend:
+
+Use Haversine distance for routing
+Only use Directions for final display or skip it entirely
+🔐 VERY IMPORTANT: API Key Safety
+This matters a lot for grading.
+
+✅ Correct way:
+Store key in environment variable:
+
+export GOOGLE_API_KEY="yourkeyhere"
+In Python:
+
+
+import os
+API_KEY = os.getenv("GOOGLE_API_KEY")
+❌ Never:
+Hardcode the key
+Commit .env files
+Paste key into README
+If you leak a key → automatic zero (as stated in the assignment).
+🧠 What “Optimal” Means (TA-Friendly Definition)
+You should explicitly define this in your README:
+
+“Optimal” is defined as minimizing total walking distance using a greedy nearest-neighbor strategy.
+This is 100% acceptable and shows algorithmic thinking.
+🧩 Implementation Plan (Python)
+Step 1: Get User Input
+
+address = input("Enter a starting address: ")
+max_bars = int(input("How many bars? "))
+Step 2: Geocode Address
+Call Google Geocoding API
+
+Extract:
+
+lat = response["results"][0]["geometry"]["location"]["lat"]
+lng = response["results"][0]["geometry"]["location"]["lng"]
+Step 3: Fetch Nearby Bars
+Call Places Nearby Search:
+
+
+bars = [
+  {
+    "name": place["name"],
+    "lat": place["geometry"]["location"]["lat"],
+    "lng": place["geometry"]["location"]["lng"],
+    "rating": place.get("rating", None)
+  }
+]
+You can:
+
+Sort by rating
+Limit to top 10–15 bars
+Step 4: Distance Calculation (No API Calls)
+Use Haversine formula:
+
+
+def haversine(lat1, lon1, lat2, lon2):
+    ...
+This avoids rate limits and looks smart.
+Step 5: Build the Route
+Greedy nearest-neighbor:
+
+
+route = []
+current = start_locationwhile bars and len(route) < max_bars:
+    next_bar = min(
+        bars,
+        key=lambda b: haversine(current["lat"], current["lng"], b["lat"], b["lng"])
+    )
+    route.append(next_bar)
+    bars.remove(next_bar)
+    current = next_bar
+Step 6: Output Results
+
+Optimal Bar-Hopping Route (Walking):
+
+1. Kelly’s Bar – 0.18 miles (⭐ 4.6)
+2. Hemingway’s – 0.22 miles (⭐ 4.4)
+3. Jack’s Bar – 0.14 miles (⭐ 4.7)
+
+Total distance: 0.54 miles
+Optionally generate:
+
+Google Maps URL with waypoints
+CSV or text summary
+📁 Repo Structure (Recommended)
+
+barhop-google/
+├── barhop.py
+├── README.md
+├── PROMPT_HISTORY.txt
+├── requirements.txt
+└── .gitignore
+.gitignore
+
+
+.env
+📝 README (What You’ll Explain)
+Your README should clearly explain:
+
+Which Google APIs are used
+How HTTP requests are made with requests
+What data is extracted from the JSON responses
+How distance is computed
+How the routing logic works
+How to set the API key locally
+This is exactly what the rubric wants.
+🤖 Prompt Log (What to Include)
+Examples:
+
+“Explain how Google Places Nearby Search works”
+“Help me design a greedy routing algorithm”
+“Explain the structure of the Places API JSON response”
+Short, intentional, thoughtful.
+⚠️ One Honest Warning
+Google APIs are powerful, but:
+
+They do require billing to be enabled
+You must restrict your API key in Google Cloud Console
+Restrict to specific APIs
+Restrict HTTP referrers (or IP if local)
+If you want zero risk, OpenStreetMap is safer — but Google Places is still fine if you’re careful.
+🚀 Next Steps (Pick One)
+I can:
+
+Write starter Python code for this exact project
+Help you set up the Google Cloud API key safely
+Draft a polished README
+Help you define portfolio wording
+Just tell me what you want next 👇
+
+I want to implement this plan can you write me a python script that does this.
+
+B) Okay my code works very well in the console but I want to make it usable by a regular person. I am thinking maybe a web app that can run in browsers or something what are some ways I can implement my goal of making it usable to people
+
+C) okay I want to use fastAPI to host my python script on a webpage can you plan out how I can do this. Right now all I have is the python script
